@@ -1,5 +1,5 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/CivicLens.Api/CivicLens.Api.csproj" />
+    <Project Path="backend/CivicLens.Api.csproj" />
   </Folder>
 </Solution>

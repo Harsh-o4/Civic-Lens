@@ -64,25 +64,27 @@ A lightweight, robust web platform built to bridge the gap between citizens and 
    ```
 
 2. **Configure Database Connection:**
-   Update the `ConnectionStrings:DefaultConnection` in `src/CivicLens.Api/appsettings.json` with your PostgreSQL database details.
+   Copy `backend/appsettings.example.json` to
+   `backend/appsettings.json`, then update the connection string and
+   JWT key. The real `appsettings.json` is ignored so credentials are not committed.
 
 3. **Create the database and apply the schema:**
    ```bash
    createdb civic_lens
-   psql -d civic_lens -f scripts/init_schema.sql
+   psql -d civic_lens -f backend/scripts/init_schema.sql
    ```
 
    If PostgreSQL requires a username or host, use the same values configured in
-   `appsettings.json`, for example `psql -U postgres -d civic_lens -f scripts/init_schema.sql`.
+   `appsettings.json`, for example `psql -U postgres -d civic_lens -f backend/scripts/init_schema.sql`.
 
 4. **Apply Database Migrations:**
    ```bash
-   dotnet ef database update --project src/CivicLens.Api
+   dotnet ef database update --project backend
    ```
 
 5. **Run the API Server:**
    ```bash
-   dotnet run --project src/CivicLens.Api
+   dotnet run --project backend
    ```
 
 6. **Access API Documentation:**
@@ -108,9 +110,9 @@ JWT bearer token:
 * `PATCH /api/v1/issues/{id}/status` — Admin or FieldTech status updates.
 * `POST /api/v1/issues/{id}/assign` — Admin assignment to a FieldTech.
 
-Apply [scripts/init_schema.sql](scripts/init_schema.sql) to a PostgreSQL database with
+Apply [backend/scripts/init_schema.sql](backend/scripts/init_schema.sql) to a PostgreSQL database with
 PostGIS enabled before registering users or submitting issues. Replace the placeholder
-JWT key in `src/CivicLens.Api/appsettings.json` with a randomly generated secret of
+JWT key in `backend/appsettings.json` with a randomly generated secret of
 at least 32 characters.
 
 The frontend implementation is in [frontend](frontend), with additional local

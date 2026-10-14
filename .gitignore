@@ -36,6 +36,9 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Local configuration and secrets
+**/appsettings.json
+**/appsettings.*.json
+!**/appsettings.example.json
 appsettings.Local.json
 appsettings.*.Local.json
 .env
@@ -45,6 +48,17 @@ appsettings.*.Local.json
 *.pem
 *.key
 secrets.json
+**/*credentials*.json
+**/*secrets*.json
+*.config.local
+*.development.json
+*.production.json
+
+# Local database connection and API override files
+**/.env
+**/.env.*
+frontend/config.local.js
+backend/**/Properties/launchSettings.local.json
 
 # Database exports and local data
 *.dump
@@ -68,6 +82,3 @@ Desktop.ini
 # Session/project planning files
 agent.md
 progress.md
-
-# The root README is intentionally tracked
-!readme.md

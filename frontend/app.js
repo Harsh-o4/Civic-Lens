@@ -26,7 +26,7 @@ const api = async (path, options = {}) => {
   try {
     response = await fetch(`${API_BASE}${path}`, { ...options, headers });
   } catch {
-    throw new Error(`Cannot connect to the API at ${API_BASE}. Start the backend with "dotnet run --project src/CivicLens.Api".`);
+    throw new Error(`Cannot connect to the API at ${API_BASE}. Start the backend with "dotnet run --project backend".`);
   }
   if (!response.ok) {
     let detail = `Request failed (${response.status})`;

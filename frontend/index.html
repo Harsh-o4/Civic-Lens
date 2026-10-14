@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Report and track civic infrastructure issues.">
+  <title>CivicLens</title>
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#report" aria-label="CivicLens home">
+      <svg class="brand-mark" viewBox="0 0 40 40" role="img" aria-label="Magnifying lens">
+        <circle cx="17" cy="17" r="11" fill="none" stroke="currentColor" stroke-width="4"/>
+        <path d="m25 25 10 10" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="5"/>
+      </svg>
+      <span>Civic<span>Lens</span></span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#report">Report an issue</a>
+      <a href="#dashboard">Dashboard</a>
+      <button id="auth-button" class="button button-outline" type="button">Sign in</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="report">
+      <div>
+        <p class="eyebrow">Make your neighbourhood better</p>
+        <h1>Report a problem.<br><span>Track the change.</span></h1>
+        <p class="hero-copy">Help your local team find and fix potholes, broken streetlights, overflowing bins, and other civic issues.</p>
+      </div>
+      <div class="hero-stat"><strong id="issue-count">—</strong><span>issues reported</span></div>
+    </section>
+
+    <section class="content-grid">
+      <article class="card form-card">
+        <div class="section-heading">
+          <div><p class="eyebrow">Citizen report</p><h2>What needs attention?</h2></div>
+          <span class="step">01 / 02</span>
+        </div>
+        <form id="issue-form">
+          <label for="title">Short title</label>
+          <input id="title" name="title" maxlength="200" required placeholder="e.g. Large pothole on Main Street">
+          <label for="description">Describe the issue</label>
+          <textarea id="description" name="description" maxlength="4000" required rows="4" placeholder="Add useful details for the municipal team..."></textarea>
+          <div class="two-columns">
+            <div><label for="category-id">Category ID</label><input id="category-id" name="categoryId" value="00000000-0000-0000-0000-000000000001" required placeholder="UUID from your category"></div>
+          </div>
+          <div class="upload-row">
+            <label for="media-file">Add a photo <small>(optional)</small></label>
+            <input id="media-file" name="mediaFile" type="file" accept="image/jpeg,image/png,image/webp">
+            <p class="upload-hint">JPG, PNG, or WebP · Maximum 5 MB</p>
+            <div class="preview" id="media-preview" hidden><span id="preview-image-container"></span><span id="preview-label"></span><button id="remove-media" class="text-button" type="button">Remove</button></div>
+          </div>
+          <label>Pin the location <span class="required">*</span></label>
+          <div id="report-map" class="map" aria-label="Map for selecting issue location"></div>
+          <p class="coordinates" id="coordinates">Click the map to place a pin.</p>
+          <button class="button button-primary" type="submit">Submit issue <span aria-hidden="true">→</span></button>
+          <p class="form-message" id="form-message" role="status"></p>
+        </form>
+      </article>
+
+      <aside class="card info-card">
+        <p class="eyebrow">How it works</p>
+        <div class="info-step"><b>01</b><div><h3>Tell us what happened</h3><p>Add a clear description and photo if you have one.</p></div></div>
+        <div class="info-step"><b>02</b><div><h3>Pin the location</h3><p>Give the response team an exact place to start.</p></div></div>
+        <div class="info-step"><b>03</b><div><h3>Follow the progress</h3><p>Use the dashboard to see status updates.</p></div></div>
+        <div class="notice"><strong>Be a good neighbour</strong><p>Please report public infrastructure issues, not emergencies. Call local emergency services when someone is at risk.</p></div>
+      </aside>
+    </section>
+
+    <section class="dashboard-section" id="dashboard">
+      <div class="section-heading"><div><p class="eyebrow">Public view</p><h2>Issues near you</h2></div><button id="refresh-button" class="button button-outline" type="button">Refresh</button></div>
+      <div class="filters">
+        <label>Status <select id="status-filter"><option value="">All statuses</option><option>Submitted</option><option>InReview</option><option>Assigned</option><option>InProgress</option><option>Resolved</option><option>Closed</option></select></label>
+        <label>Min latitude <input id="min-latitude" type="number" step="any"></label>
+        <label>Max latitude <input id="max-latitude" type="number" step="any"></label>
+        <button id="filter-button" class="button button-dark" type="button">Apply filters</button>
+      </div>
+      <div id="issue-list" class="issue-list"><p class="empty-state">Loading issues...</p></div>
+    </section>
+  </main>
+
+  <dialog id="auth-dialog" class="auth-dialog">
+    <button id="close-auth" class="dialog-close" type="button" aria-label="Close">×</button>
+    <p class="eyebrow">Welcome back</p><h2 id="auth-title">Sign in</h2>
+    <form id="auth-form">
+      <div id="name-field" hidden><label for="auth-name">Full name</label><input id="auth-name" name="fullName" maxlength="200"></div>
+      <label for="auth-email">Email</label><input id="auth-email" name="email" type="email" required>
+      <label for="auth-password">Password</label><input id="auth-password" name="password" type="password" minlength="8" required>
+      <button class="button button-primary" type="submit" id="auth-submit">Sign in</button>
+      <button class="text-button" type="button" id="toggle-auth">Need an account? Register</button>
+      <p class="form-message" id="auth-message" role="status"></p>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

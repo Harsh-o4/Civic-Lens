@@ -82,3 +82,6 @@ Desktop.ini
 # Session/project planning files
 agent.md
 progress.md
+
+# Ignore the ignore file itself (local-only repository setup)
+.gitignore

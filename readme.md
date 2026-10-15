@@ -79,7 +79,7 @@ A lightweight, robust web platform built to bridge the gap between citizens and 
 
 4. **Apply Database Migrations:**
    ```bash
-   dotnet ef database update --project backend
+   dotnet ef database update --project backend/CivicLens.Api.csproj
    ```
 
 5. **Run the API Server:**
@@ -115,8 +115,8 @@ PostGIS enabled before registering users or submitting issues. Replace the place
 JWT key in `backend/appsettings.json` with a randomly generated secret of
 at least 32 characters.
 
-The frontend implementation is in [frontend](frontend), with additional local
-development instructions in [frontend/README.md](frontend/README.md).
+The frontend implementation is in [frontend](frontend). The backend solution is
+in [backend/CivicLens.slnx](backend/CivicLens.slnx).
 
 > **Local testing only:** Authentication is currently disabled at the frontend
 > and issue write endpoints so the basic website flow can be tested without
